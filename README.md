@@ -28,7 +28,9 @@ Remaining services are all run in Docker containers.
 Docker is one of a few ways to run containerized applications on Linux. Docker Community Edition is a well-established project that brings containers to the Linux OS.
 
 ### Why Docker?
-The answer is simple: Docker Compose. Using Docker Compose allows me to have a simple, well understood, and repeatable way to bring up services I want to run on my home automation system. Alternative methods for installing all seem to involve more manual effort and more risk of incompatibilities with operating sytem components. Granted, Docker is not without its own learning curve, but the idea of having installation documented and repeatable in a compose.yml file is why I choose Docker.
+The answer is simple: Docker Compose.
+
+Using Docker Compose allows me to have a simple, well understood, and repeatable way to bring up services I want to run on my home automation system. Alternative methods for installing all seem to involve more manual effort and more risk of incompatibilities with operating sytem components. Granted, Docker is not without its own learning curve, but the idea of having installation documented and repeatable in a compose.yml file is why I choose Docker.
 
 ### Installing on Alpine
 To install Docker, I'm using the Alpine package called _docker_, which includes Docker Community Edition and supporting packages. It's installed with the command shown below.
