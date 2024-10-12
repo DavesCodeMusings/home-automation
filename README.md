@@ -23,7 +23,7 @@ For help getting these services set up on Alpine, see the [Alpine Wiki Tutorials
 Remaining services are all run in Docker containers.
 
 ## Docker and Docker Compose
-To install Docker, I'm using the Alpine package called ''docker'' installed with the command shown below.
+To install Docker, I'm using the Alpine package called _docker_ installed with the command shown below.
 
 ```
 apk update && apk add docker
