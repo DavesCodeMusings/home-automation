@@ -10,8 +10,12 @@ This HOWTO also takes a minimalist approach, focusing on the specifics of runnin
 ## Hardware
 My platform of choice is the Intel based mini PC. Next Unit of Computing (NUC) is what Intel called it. There are multiple manufacturers now. In these examples, I'm using an old Celeron J4005-based NUC with 8G of RAM and a 256G Western Digital Green SATA-attached solid-state drive. It's humming along happily, but that particular model is no longer manufactured. Any of the popular N100 CPU models available today should be more than capable.
 
+> Why not a Raspberry Pi?
+> 
+> I actually used a Pi 4 for my first iteration of this project, a few years ago. But when COVID supply chain disruptions made them hard to come by, I switched to a budget mini-PC. I quickly found that a few extra dollars gets me an attractive case, including a reliable power supply, SATA options without the USB adapter, and still provides the Ethernet, WiFi and USB 3 ports similar to the Pi.
+
 ## Operating System
-I'm using Alpine Linux as my operating system. Everything I'm doing should be possible with Debian or Raspberry Pi OS. My preference for Alpine comes from its small footprint. Nearly everything I'm running is in a Docker container. All the underlying OS has to is run Docker and provide a few basic services. Alpine can do that in an 8G root partition. In fact, it's using less than half of that.
+I'm using Alpine Linux as my operating system. Everything I'm doing should be possible with Debian or Raspberry Pi OS. My preference for Alpine comes from its small footprint. Nearly everything I'm running is in a Docker container. All the underlying OS has to is run Docker and provide a few basic services. Alpine can do that in an 8G root partition. (In fact, it's using less than half of that.) This leaves more of the drive available for services I want to run and data I want to store.
 
 ## Basic Services
 Here's a list of what I'm running on the Alpine OS beyond what is included in the base installation.
