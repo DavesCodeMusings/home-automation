@@ -16,7 +16,7 @@ Here's a list of what I'm running on the Alpine OS beyond what is included in th
 * slapd - provides a single username and password option for applications that support LDAP authentication
 * smartd - monitors solid state and spinning disk health, reporting potential problems
 
-The main goal of this set of services (everything except for slapd) is to provide monitoring and notification. The secondary goal is to provide an easy user experience with one password to access all network services. This is the reason for including LDAP (slapd).
+The main goal of this set of services (everything except for slapd) is to provide monitoring and notification. The secondary goal is to provide an easy user experience with one password to access all network services with LDAP authentication (slapd).
 
 For help getting these services set up on Alpine, see the [Alpine Wiki Tutorials and HOWTOs](https://wiki.alpinelinux.org/wiki/Tutorials_and_Howtos). Specifically, the HOWTOs for [apcupsd](https://wiki.alpinelinux.org/wiki/Apcupsd), [Small-Time Email with Exim and Dovecot](https://wiki.alpinelinux.org/wiki/Small-Time_Email_with_Exim_and_Dovecot), and [OpenLDAP](https://wiki.alpinelinux.org/wiki/Configure_OpenLDAP).
 
