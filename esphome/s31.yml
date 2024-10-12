@@ -1,0 +1,88 @@
+# Sample config for SONOFF S31 reflashed with ESPHome.
+esphome:
+  name: s31-1
+  friendly_name: s31-1
+  # MAC: 1D:EC:AF:C0:FF:EE
+
+esp8266:
+  board: esp01_1m
+  early_pin_init: False  # Mitigate relay flipping on reboot.
+
+# Disable logging (UART is used by cse7766 power sensor.)
+logger:
+  baud_rate: 0
+
+# Enable Home Assistant API
+api:
+  encryption:
+    key: "<redacted>"
+
+ota:
+  - platform: esphome
+    password: "<redacted>"
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "S31-1 Fallback Hotspot"
+    password: "<redacted>"
+
+captive_portal:
+
+# --- Config for smart switch operation ---
+switch:
+  - platform: gpio
+    name: "relay"
+    pin: GPIO12
+    id: relay
+    restore_mode: RESTORE_DEFAULT_OFF # Modify for your use case
+
+binary_sensor:
+  - platform: gpio
+    pin:
+      number: GPIO0
+      mode: INPUT_PULLUP
+      inverted: True
+    name: "button"
+    on_press:
+      - switch.toggle: relay  # Switch always operates the relay
+
+  - platform: status
+    name: "status"
+
+status_led:
+  pin:
+    number: GPIO13
+    inverted: True
+
+# --- Config for power monitoring ---
+uart:
+  rx_pin: RX
+  baud_rate: 4800
+  parity: EVEN
+
+sensor:
+  - platform: cse7766
+    current:
+      name: "current"
+      accuracy_decimals: 2
+      filters:
+        throttle_average: 60s
+    voltage:
+      name: "voltage"
+      accuracy_decimals: 0
+      filters:
+        throttle_average: 60s
+    power:
+      name: "power"
+      accuracy_decimals: 1
+      id: power
+      filters:
+        throttle_average: 60s
+
+  - platform: wifi_signal
+    name: "wifi_signal"
+    update_interval: 60s
