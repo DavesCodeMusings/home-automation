@@ -5,6 +5,8 @@ A lot of people run Home Assistant for their home automation system. Quite a few
 
 My focus is on minimalism and avoiding cloud connected devices. However, minimalism does not mean a lack of features. It is simply a careful consideration features and the effort required to maintain them.
 
+This HOWTO also takes a minimalist approach, focusing on the specifics of running these services together in Docker containers as a Docker Compose project, and leaving the details of OS setup and some service configuration to established, external documentation sources.
+
 ## Hardware
 My platform of choice is the Intel based mini PC. Next Unit of Computing (NUC) is what Intel called it. There are multiple manufacturers now. In these examples, I'm using an old Celeron J4005-based NUC with 8G of RAM and a 256G Western Digital Green SATA-attached solid-state drive. It's humming along happily, but that particular model is no longer manufactured. Any of the popular N100 CPU models available today should be more than capable.
 
