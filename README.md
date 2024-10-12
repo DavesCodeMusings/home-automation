@@ -73,7 +73,7 @@ portainer/
 
 Most of the directory names match up with easily recognizable open source projects, like _homeassistant_, _nginx_, _pihole_, etc. This list simply shows what is possible with a single, budget mini-pc. For the remainder of this HOWTO, we'll focus on the _homeassistant_ and _nginx_ compose projects.
 
-### Grouping Everything Home Assistant Related
+#### Grouping Everything Home Assistant Related
 Inside the homeassistant directory, there are a handful of files and subdirectories.
 
 ```
@@ -90,5 +90,7 @@ The _hass_ subdirectory contains the _config_ directory where Home Assistant sto
 
 Finally, there is the compose.yml file itself. This lets Docker Compose know what options to use when starting up the containers.
 
-### Grouping Nginx Configs
+#### Grouping Nginx Configs
 Inside the nginx directory, there is a similar arrangement of compose.yml and persistent data. Though with Nginx, the configuration directory is called _conf.d_ and it contains bits of the overall configuration grouped as individual files. There is no difference between this and the way Nginx would be configured if it were installed as an Alpine package.
+
+### Installing The Project Directories and Compose Files
