@@ -130,6 +130,6 @@ homeassistant   lscr.io/linuxserver/homeassistant:latest   "/init"
 nginx_hass      nginx                                      "/docker-entrypoint.…"   nginx           16 minutes ago   Up 16 minutes             0.0.0.0:8080->80/tcp, :::8080->80/tcp, 0.0.0.0:8443->443/tcp, :::8443->443/tcp
 ```
 
-> Remeber, you need to be in the Docker Compose project directory for this to work. (The same directory as the compose.yml file.)
+> Remember, you need to be in the Docker Compose project directory for this to work. (The same directory as the compose.yml file.)
 
 MORE TO COME!
