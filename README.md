@@ -12,8 +12,8 @@ Here's a list of what I'm running on the Alpine OS beyond what is included in th
 * apcupsd - monitors and alerts on uninterruptable power supply (UPS) events
 * dovecot - lets users access email with IMAP and POP3 clients
 * exim - delivers mail locally
-* monit - tracks system processes, sends alerts, and in some situations repairs automatically
-* slapd - provides a single username and password for applications that support LDAP authentication
+* monit - tracks system processes, sends alerts, and in some situations makes repairs automatically
+* slapd - provides a single username and password option for applications that support LDAP authentication
 * smartd - monitors solid state and spinning disk health, reporting potential problems
 
 The main goal of this set of services (everything except for slapd) is to provide monitoring and notification. The secondary goal is to provide an easy user experience with one password to access all network services. This is the reason for including LDAP (slapd).
