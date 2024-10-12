@@ -110,7 +110,7 @@ When setup.sh finishes, it prints a helpful hint that you can type `docker compo
 Running the command `docker compose up -d` from within the _homeassistant_ project directory starts all the containers listed in the _compose.yml_ file.
 
 ```
-# docker compose up -d
+alpine:/var/lib/docker/compose/homeassistant# docker compose up -d
 [+] Running 4/4
  ✔ Network homeassistant_reverse_proxy  Created                            0.1s
  ✔ Container nginx_hass                 Started                            0.5s
@@ -121,7 +121,7 @@ Running the command `docker compose up -d` from within the _homeassistant_ proje
 You can see how things are doing using the `docker compose ps` command.
 
 ```
-# docker compose ps
+alpine:/var/lib/docker/compose/homeassistant# docker compose ps
 NAME            IMAGE                                      COMMAND
     SERVICE         CREATED          STATUS                    PORTS
 esphome         esphome/esphome:latest                     "/entrypoint.sh dash…"   esphome         16 minutes ago   Up 16 minutes (healthy)
@@ -129,5 +129,7 @@ homeassistant   lscr.io/linuxserver/homeassistant:latest   "/init"
     homeassistant   16 minutes ago   Up 16 minutes
 nginx_hass      nginx                                      "/docker-entrypoint.…"   nginx           16 minutes ago   Up 16 minutes             0.0.0.0:8080->80/tcp, :::8080->80/tcp, 0.0.0.0:8443->443/tcp, :::8443->443/tcp
 ```
+
+> Remeber, you need to be in the Docker Compose project directory for this to work. (The same directory as the compose.yml file.)
 
 MORE TO COME!
