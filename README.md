@@ -93,7 +93,7 @@ Finally, there is the compose.yml file itself. This lets Docker Compose know wha
 #### Grouping Nginx Configs
 Inside the nginx directory, there is a similar arrangement of compose.yml and persistent data. Though with Nginx, the configuration directory is called _conf.d_ and it contains bits of the overall configuration grouped as individual files. There is no difference between this and the way Nginx would be configured if it were installed as an Alpine package.
 
-### Installing The Project Directories and Compose Files
+### Creating the Project Directories and Compose Files
 The [setup.sh](https://github.com/DavesCodeMusings/home-automation/blob/main/homeassistant/setup.sh) file in this repository's _homeassistant_ directory can be used to create the directory structure and compose.yml file for the Home Assistant and ESPHome containers. Simply download it into the directory where you want Home Assistant to live and run setup.sh from there.
 
 For example:
