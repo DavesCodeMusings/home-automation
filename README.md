@@ -101,6 +101,6 @@ For example:
 ```
 alpine:/var/lib/docker/compose# mkdir homeassistant
 alpine:/var/lib/docker/compose# cd homeassistant
-alpine:/var/lib/docker/compose/homeassistant# wget
+alpine:/var/lib/docker/compose/homeassistant# wget https://raw.githubusercontent.com/DavesCodeMusings/home-automation/refs/heads/main/homeassistant/setup.sh
 alpine:/var/lib/docker/compose/homeassistant# sh ./setup.sh
 ```
