@@ -56,3 +56,39 @@ Define and run multi-container applications with Docker
 Docker Compose reads its configuration from a YAML file, named compose.yml, in a directory. The directory exists to provide separation between projects and can also hold other files and subdirectories. I'm using this Compose project directory to store persistent data alongside the compose.yml for easy organization.
 
 I put my Docker Compose projects in the parent directory of _/var/lib/docker/compose_ and give the _docker_ group write permissions. You can put it wherever you want. I chose _/var/lib/docker/compose_ to keep all Docker related things together on the same logical volume.
+
+My Compose project directory looks like this:
+
+```
+alpine:/var/lib/docker/compose# ls -1
+file-sharing/
+gitea/
+homeassistant/
+jellyfin/
+ldapinator/
+nginx/
+pihole/
+portainer/
+```
+
+Most of the directory names match up with easily recognizable open source projects, like _homeassistant_, _nginx_, _pihole_, etc. This list simply shows what is possible with a single, budget mini-pc. For the remainder of this HOWTO, we'll focus on the _homeassistant_ and _nginx_ compose projects.
+
+### Grouping Everything Home Assistant Related
+Inside the homeassistant directory, there are a handful of files and subdirectories.
+
+```
+anubis:/var/lib/docker/compose/homeassistant# ls -1
+compose.yml
+esphome/
+hass/
+setup.sh*
+```
+
+Starting from the bottom, setup.sh is a shell script I'm using to create and populate the necessary subdirectories. It also creates the compose.yml, though this is simply for the convenience of having everything in one file.
+
+The _hass_ subdirectory contains the _config_ directory where Home Assistant stores its persistent data. The _esphome_ subdirectory is similar in that it contains a single _config_ directory where ESPHome stores its YAML for various devices and their secrets. Having this persistent data grouped under the hass project directory organizes things and makes backup and recovery easier.
+
+Finally, there is the compose.yml file itself. This lets Docker Compose know what options to use when starting up the containers.
+
+### Grouping Nginx Configs
+Inside the nginx directory, there is a similar arrangement of compose.yml and persistent data. Though with Nginx, the configuration directory is called _conf.d_ and it contains bits of the overall configuration grouped as individual files. There is no difference between this and the way Nginx would be configured if it were installed as an Alpine package.
