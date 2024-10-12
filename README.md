@@ -62,38 +62,35 @@ I put my Docker Compose projects in the parent directory of _/var/lib/docker/com
 My Compose project directory looks like this:
 
 ```
-alpine:/var/lib/docker/compose# ls -1
+alpine:/var/lib/docker/compose# ls -1F
 file-sharing/
 gitea/
 homeassistant/
 jellyfin/
 ldapinator/
-nginx/
 pihole/
 portainer/
 ```
 
-Most of the directory names match up with easily recognizable open source projects, like _homeassistant_, _nginx_, _pihole_, etc. This list simply shows what is possible with a single, budget mini-pc. For the remainder of this HOWTO, we'll focus on the _homeassistant_ and _nginx_ compose projects.
+Most of the directory names match up with easily recognizable open source projects, like _homeassistant_, _pihole_, etc. This list simply shows what is possible with a single, budget mini-pc. For the remainder of this HOWTO, we'll focus on the _homeassistant_ and _nginx_ compose projects.
 
-#### Grouping Everything Home Assistant Related
+### Grouping Everything Home Assistant Related
 Inside the homeassistant directory, there are a handful of files and subdirectories.
 
 ```
-alpine:/var/lib/docker/compose/homeassistant# ls -1
+alpine:/var/lib/docker/compose/homeassistant# ls -1F
 compose.yml
 esphome/
 hass/
+nginx/
 setup.sh*
 ```
 
 Starting from the bottom, setup.sh is a shell script I'm using to create and populate the necessary subdirectories. It also creates the compose.yml, though this is simply for the convenience of having everything in one file.
 
-The _hass_ subdirectory contains the _config_ directory where Home Assistant stores its persistent data. The _esphome_ subdirectory is similar in that it contains a single _config_ directory where ESPHome stores its YAML for various devices and their secrets. Having this persistent data grouped under the hass project directory organizes things and makes backup and recovery easier.
+The _hass_ subdirectory contains the _config_ directory where Home Assistant stores its persistent data. The _esphome_ subdirectory is similar in that it contains a single _config_ directory where ESPHome stores its YAML for various devices and their secrets. Having this persistent data grouped under the hass project directory organizes things and makes backup and recovery easier. Nginx also has a configuration directory, though in keeping with naming conventions, it's called _conf.d_.
 
 Finally, there is the compose.yml file itself. This lets Docker Compose know what options to use when starting up the containers.
-
-#### Grouping Nginx Configs
-Inside the nginx directory, there is a similar arrangement of compose.yml and persistent data. Though with Nginx, the configuration directory is called _conf.d_ and it contains bits of the overall configuration grouped as individual files. There is no difference between this and the way Nginx would be configured if it were installed as an Alpine package.
 
 ### Creating the Project Directories and Compose File
 The [setup.sh](https://github.com/DavesCodeMusings/home-automation/blob/main/homeassistant/setup.sh) file in this repository's _homeassistant_ directory can be used to create the directory structure and compose.yml file for the Home Assistant and ESPHome containers. Simply download it into the directory where you want Home Assistant to live and run setup.sh from there.
