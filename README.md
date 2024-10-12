@@ -88,7 +88,7 @@ setup.sh*
 
 Starting from the bottom, setup.sh is a shell script I'm using to create and populate the necessary subdirectories. It also creates the compose.yml, though this is simply for the convenience of having everything in one file.
 
-The _hass_ subdirectory contains the _config_ directory where Home Assistant stores its persistent data. The _esphome_ subdirectory is similar in that it contains a single _config_ directory where ESPHome stores its YAML for various devices and their secrets. Having this persistent data grouped under the hass project directory organizes things and makes backup and recovery easier. Nginx also has a configuration directory, though in keeping with naming conventions, it's called _conf.d_.
+The _hass_ subdirectory contains the _config_ directory where Home Assistant stores its persistent data. The _esphome_ subdirectory is similar in that it contains a single _config_ directory where ESPHome stores its YAML for various devices and their secrets. Nginx also has a configuration directory, though in keeping with naming conventions, it's called _conf.d_. Having this persistent data grouped under the hass project directory organizes things and makes backup and recovery easier.
 
 Finally, there is the compose.yml file itself. This lets Docker Compose know what options to use when starting up the containers.
 
