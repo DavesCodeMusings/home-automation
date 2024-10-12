@@ -1,4 +1,4 @@
-# Sample config for SONOFF S31 reflashed with ESPHome.
+# Sample config for Sonoff S31 reflashed with ESPHome.
 esphome:
   name: s31-1
   friendly_name: s31-1
