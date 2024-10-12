@@ -104,4 +104,30 @@ alpine:/var/lib/docker/compose/homeassistant# wget https://raw.githubusercontent
 alpine:/var/lib/docker/compose/homeassistant# sh ./setup.sh
 ```
 
+When setup.sh finishes, it prints a helpful hint that you can type `docker compose up -d` to start the Home Assistant containers.
+
+### Starting Up the Stack
+Running the command `docker compose up -d` from within the _homeassistant_ project directory starts all the containers listed in the _compose.yml_ file.
+
+```
+# docker compose up -d
+[+] Running 4/4
+ ✔ Network homeassistant_reverse_proxy  Created                            0.1s
+ ✔ Container nginx_hass                 Started                            0.5s
+ ✔ Container esphome                    Started                            0.3s
+ ✔ Container homeassistant              Started                            0.3s
+```
+
+You can see how things are doing using the `docker compose ps` command.
+
+```
+# docker compose ps
+NAME            IMAGE                                      COMMAND
+    SERVICE         CREATED          STATUS                    PORTS
+esphome         esphome/esphome:latest                     "/entrypoint.sh dash…"   esphome         16 minutes ago   Up 16 minutes (healthy)
+homeassistant   lscr.io/linuxserver/homeassistant:latest   "/init"
+    homeassistant   16 minutes ago   Up 16 minutes
+nginx_hass      nginx                                      "/docker-entrypoint.…"   nginx           16 minutes ago   Up 16 minutes             0.0.0.0:8080->80/tcp, :::8080->80/tcp, 0.0.0.0:8443->443/tcp, :::8443->443/tcp
+```
+
 MORE TO COME!
