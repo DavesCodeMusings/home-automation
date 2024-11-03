@@ -1,9 +1,9 @@
 > Work in Progress
 
 # Home Assistant, ESPHome, Nginx, and Docker
-A lot of people run Home Assistant for their home automation system. Quite a few of those people try to avoid "the cloud" and use only locally controlled devices. But I don't think a lot of folks run their Home Assistant in Docker containers. That's what this repository is for. It's a place where I share my configurations for Home Assistant, running in Docker containers, and avoiding cloud connections.
+A lot of people run Home Assistant for their home automation system. Quite a few of those people try to avoid "the cloud" and use only locally controlled devices. But I don't think a lot of folks run their Home Assistant in Docker containers. Or if they do, they're pretty low key about it.
 
-My focus is on minimalism and avoiding cloud connected devices. However, minimalism does not mean a lack of features. It is simply a careful consideration features and the effort required to maintain them.
+That's what this repository is for. It's a place where I share my configurations for Home Assistant, running in Docker containers, and avoiding cloud connections. My focus is on minimalism and avoiding cloud connected devices. However, minimalism does not mean a lack of features. It is simply a careful consideration features and the effort required to maintain them.
 
 This HOWTO also takes a minimalist approach, focusing on the specifics of running these services together in Docker containers as a Docker Compose project, and leaving the details of OS setup and some service configuration to established, external documentation sources.
 
@@ -48,7 +48,9 @@ To install Docker, I'm using the Alpine package called _docker_, which includes 
 apk update && apk add docker
 ```
 
-Once this is done, verify by showing the help output for the main commands we'll be using. Abbreviated output is shown below.
+> See [the alpine wiki](https://wiki.alpinelinux.org/wiki/Alpine_Package_Keeper) for more information about Alpine's package management tool. 
+
+Once Docker is installed, verify by showing the help output for the main commands we'll be using. Abbreviated output is shown below.
 
 ```
 alpine:~# docker --help
@@ -65,23 +67,8 @@ Docker Compose reads its configuration from a YAML file, named compose.yml, in a
 
 I put my Docker Compose projects in the parent directory of _/var/lib/docker/compose_ and give the _docker_ group write permissions. You can put it wherever you want. I chose _/var/lib/docker/compose_ to keep all Docker related things together on the same logical volume.
 
-My Compose project directory looks like this:
-
-```
-alpine:/var/lib/docker/compose# ls -1F
-file-sharing/
-gitea/
-homeassistant/
-jellyfin/
-ldapinator/
-pihole/
-portainer/
-```
-
-Most of the directory names match up with easily recognizable open source projects, like _homeassistant_, _pihole_, etc. This list simply shows what is possible with a single, budget mini-pc. For the remainder of this HOWTO, we'll focus on the _homeassistant_ and _nginx_ compose projects.
-
 ### Grouping Everything Home Assistant Related
-Inside the homeassistant directory, there are a handful of files and subdirectories.
+Inside the compose project directory, I've created a subdirectory for homeassistant. Inside, there are a handful of files and subdirectories for everything related to home automation.
 
 ```
 alpine:/var/lib/docker/compose/homeassistant# ls -1F
@@ -92,7 +79,7 @@ nginx/
 setup.sh*
 ```
 
-Starting from the bottom, setup.sh is a shell script I'm using to create and populate the necessary subdirectories. It also creates the compose.yml, though this is simply for the convenience of having everything in one file.
+Starting from the bottom, [setup.sh](https://github.com/DavesCodeMusings/home-automation/blob/main/homeassistant/setup.sh) is a shell script I'm using to create and populate the necessary subdirectories. It also creates compose.yml. This is simply for the convenience of having everything in one file.
 
 The _hass_ subdirectory contains the _config_ directory where Home Assistant stores its persistent data. The _esphome_ subdirectory is similar in that it contains a single _config_ directory where ESPHome stores its YAML for various devices and their secrets. Nginx also has a configuration directory, though in keeping with naming conventions, it's called _conf.d_. Having this persistent data grouped under the _homeassistant_ project directory organizes things and makes backup and recovery easier.
 
