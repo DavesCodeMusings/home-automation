@@ -11,6 +11,7 @@ echo "Creating directory structure."
 install -d -o0 -g0 -m755 $ESPHOME_DIR/config
 install -d -o0 -g0 -m755 $HASS_DIR/config
 install -d -o0 -g0 -m755 $NGINX_DIR/conf.d
+install -d -o0 -g0 -m755 $NGINX_DIR/html
 
 echo "Creating compose.yml."
 cat <<EOF >$BASE_DIR/compose.yml
@@ -46,7 +47,7 @@ services:
     volumes:
       - /etc/ssl:/etc/ssl:ro
       - $NGINX_DIR/conf.d:/etc/nginx/conf.d
-      - /srv/www:/usr/share/nginx/html:ro
+      - $NGINX_DIR/html:/usr/share/nginx/html:ro
     networks:
       reverse_proxy:
         ipv4_address: 172.16.0.2
