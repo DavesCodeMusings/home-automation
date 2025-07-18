@@ -58,8 +58,8 @@ networks:
     driver: bridge
     ipam:
       config:
-        - subnet: 172.16.0.0/24
-          gateway: 172.16.0.1
+        - subnet: 192.168.255.0/24
+          gateway: 192.168.255.1
 EOF
 
 echo
