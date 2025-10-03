@@ -141,7 +141,7 @@ The Mosquitto MQTT broker is configured to allow anonymous connections, but not 
 
 ```
 alpine:/# docker exec -it mosquitto sh
-/ # /usr/bin/mosquitto_passwd -b /mosquitto/config/pwfile pokemon Go
+/ # /usr/bin/mosquitto_passwd -b /mosquitto/config/passwd pokemon Go
 / # exit
 ```
 
@@ -151,7 +151,7 @@ If you happen to make a mistake with the user, you can delete it with the comman
 
 ```
 alpine:/# docker exec -it mosquitto sh
-/ # /usr/bin/mosquitto_passwd -D /mosquitto/config/pwfile pokemon
+/ # /usr/bin/mosquitto_passwd -D /mosquitto/config/passwd pokemon
 / # exit
 ```
 
