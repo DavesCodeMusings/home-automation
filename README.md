@@ -1,5 +1,3 @@
-> Work in Progress
-
 # Home Assistant, ESPHome, Nginx, and Docker
 A lot of people run Home Assistant for their home automation system. Quite a few of those people do so to avoid "the cloud" and use only locally controlled devices. But I don't think a lot of folks run their Home Assistant in Docker containers. Or if they do, they're pretty low key about it.
 
@@ -8,6 +6,8 @@ Running an entire home automation system in containers can be daunting. It's pro
 Here is where I share my configurations for Home Assistant, running in Docker containers, and avoiding cloud connections. My focus is on minimalism and avoiding cloud connected devices. However, minimalism does not mean a lack of features. It is simply a careful consideration features versus the effort required to maintain them.
 
 This HOWTO also takes a minimalist approach, focusing on the specifics of running these home automation services together in Docker containers as a Docker Compose project. I'm intentionally leaving the details of OS setup and some of the service configuration to established, external documentation sources.
+
+> This guide is a work in progress. If you don't need much hand holding, it can get you all the services up and running in containers, with further configuration left to you. If you're new to Home Assistant, Linux, and Docker, better options for beginners are: [Home Assistant Green](https://www.home-assistant.io/green/) or the [Home Assistant Raspberry Pi appliance image](https://www.home-assistant.io/installation/raspberrypi/)
 
 ## Hardware
 My platform of choice is the Intel based mini PC. Next Unit of Computing (NUC) is what Intel called it. There are multiple manufacturers now. In these examples, I'm using an old Celeron J4005-based NUC with 8G of RAM and a 256G Western Digital Green SATA-attached solid-state drive. It's humming along happily, but that particular model is no longer manufactured. Any of the popular N100 CPU models available today should be more than capable.
