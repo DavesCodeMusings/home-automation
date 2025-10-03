@@ -1,9 +1,9 @@
 # Home Assistant, ESPHome, Nginx, and Docker
 A lot of people run Home Assistant for their home automation system. Quite a few of those people do so to avoid "the cloud" and use only locally controlled devices. But I don't think a lot of folks run their Home Assistant in Docker containers. Or if they do, they're pretty low key about it.
 
-Running an entire home automation system in containers can be daunting. It's probably not for the average Home Assistant user. But, if you facy yourself cosplaying a sysadmin, this repository is for you.
+Running an entire home automation system in containers can be daunting. It's probably not for the average Home Assistant user. But, if you facy yourself cosplaying a sysadmin from time to time, this repository is for you.
 
-Here is where I share my configurations for Home Assistant, running in Docker containers, and avoiding cloud connections. My focus is on minimalism and avoiding cloud connected devices. However, minimalism does not mean a lack of features. It is simply a careful consideration features versus the effort required to maintain them.
+Here is where I share my configurations for Home Assistant, running in Docker containers, and avoiding cloud connections. My focus is on minimalism and local control of my devices. However, minimalism does not mean a lack of features. It is simply a careful consideration features versus the effort required to maintain them.
 
 This HOWTO also takes a minimalist approach, focusing on the specifics of running these home automation services together in Docker containers as a Docker Compose project. I'm intentionally leaving the details of OS setup and some of the service configuration to established, external documentation sources.
 
@@ -17,7 +17,7 @@ My platform of choice is the Intel based mini PC. Next Unit of Computing (NUC) i
 > I actually used a Pi 4 for my first iteration of this project, a few years ago. But when COVID supply chain disruptions made them hard to come by, I switched to a budget mini-PC. I quickly found that a few extra dollars gets me an attractive case, including a reliable power supply, SATA options without the USB adapter, and still provides the Ethernet, WiFi and USB 3 ports similar to the Pi.
 
 ## Operating System
-I'm using Alpine Linux as my operating system. Everything I'm doing should be possible with Debian or Raspberry Pi OS. My preference for Alpine comes from its small footprint. Nearly everything I'm running is in a Docker container. All the underlying OS has to is run Docker and provide a few basic services. Alpine can do that in an 8G root partition. (In fact, it's using less than half of that.) This leaves more of the drive available for services I want to run and data I want to store.
+I'm using [Alpine Linux](https://alpinelinux.org/) as my operating system. Everything I'm doing should be possible with Debian or Raspberry Pi OS. My preference for Alpine comes from its small footprint. Nearly everything I'm running is in a Docker container. All the underlying OS has to is run Docker and provide a few basic services. Alpine can do that in an 8G root partition. (In fact, it's using less than half of that.) This leaves more of the drive available for services I want to run and data I want to store.
 
 ## Basic Services
 Here's a list of what I'm running on the Alpine OS beyond what is included in the base installation:
@@ -41,10 +41,10 @@ Remaining services are all run in Docker containers.
 ## Docker and Docker Compose
 Docker is one of a few ways to run containerized applications on Linux. Docker Community Edition is a well-established project that brings containers to the Linux OS.
 
-### Why Docker?
-The answer is simple: Docker Compose.
-
-Docker Compose is included with the docker package. Using Docker Compose YAML files allows me to have a simple, well understood, and repeatable way to bring up services I want to run on my home automation system. Alternative methods for installing all seem to involve more manual effort and more risk of incompatibilities with operating sytem components. Granted, Docker is not without its own learning curve, but the idea of having installation documented and repeatable in a compose.yml file is why I choose Docker.
+>### Why Docker?
+>The answer is simple: Docker Compose.
+>
+>Docker Compose is included with the docker package. Using Docker Compose YAML files allows me to have a simple, well understood, and repeatable way to bring up services I want to run on my home automation system. Alternative methods for installing all seem to involve more manual effort and more risk of incompatibilities with operating sytem components. Granted, Docker is not without its own learning curve, but the idea of having installation documented and repeatable in a compose.yml file is why I choose Docker.
 
 ### Installing Docker on Alpine
 To install Docker, I'm using the Alpine package called _docker_, which includes Docker Community Edition and supporting packages. It's installed with the command shown below.
@@ -68,7 +68,7 @@ Define and run multi-container applications with Docker
 ```
 
 ### Creating a Home for Compose Projects
-Docker Compose reads its configuration from a YAML file, named compose.yml, in a directory. The directory exists to provide separation between projects and can also hold other files and subdirectories. I'm using this Compose project directory to store persistent data alongside the compose.yml for easy organization.
+Docker Compose reads its configuration from a YAML file, named _compose.yml_, in a directory. The directory exists to provide separation between projects and can also hold other files and subdirectories. I'm using this Compose project directory to store persistent data alongside the compose.yml for easy organization.
 
 I put my Docker Compose projects in the parent directory of _/var/lib/docker/compose_ and give the _docker_ group write permissions. You can put it wherever you want. I chose _/var/lib/docker/compose_ to keep all Docker related things together on the same logical volume.
 
@@ -85,11 +85,15 @@ nginx/
 setup.sh*
 ```
 
-Starting from the bottom, [setup.sh](https://github.com/DavesCodeMusings/home-automation/blob/main/homeassistant/setup.sh) is a shell script I'm using to create and populate the necessary subdirectories. It also creates compose.yml. This is simply for the convenience of having everything in one file.
+Starting from the bottom, [setup.sh](https://github.com/DavesCodeMusings/home-automation/blob/main/homeassistant/setup.sh) is a shell script I'm using to create and populate the necessary subdirectories. It also creates _compose.yml_. This is simply for the convenience of having everything automated by one file.
 
-The _hass_ subdirectory contains the _config_ directory where Home Assistant stores its persistent data. The _esphome_ subdirectory is similar in that it contains a single _config_ directory where ESPHome stores its YAML for various devices and their secrets. Nginx also has a configuration directory, though in keeping with naming conventions, it's called _conf.d_. Having this persistent data grouped under the _homeassistant_ project directory organizes things and makes backup and recovery easier.
+The _hass_ subdirectory contains the _config_ directory where Home Assistant stores its persistent data. The _esphome_ subdirectory is similar in that it contains a single _config_ directory where ESPHome stores its YAML for various devices and their secrets. Nginx also has a configuration directory, though in keeping with naming conventions, it's called _conf.d_.
 
-Finally, there is the compose.yml file itself. This lets Docker Compose know what options to use when starting up the containers.
+The _mosquitto_ subdirectory holds all the files relevant to the MQTT broker, Mosquitto. Beneath this directory are _config_, _data_, and _log_, where Mosquitto stores its configuration (including usernames and passwords), persistent data, and log files, respectively.
+
+Having this persistent data grouped under the _homeassistant_ project directory organizes things and makes backup and recovery easier.
+
+Finally, there is the _compose.yml_ file itself. This lets Docker Compose know what options to use when starting up the containers.
 
 ### Creating the Project Directories and Compose File
 The [setup.sh](https://github.com/DavesCodeMusings/home-automation/blob/main/homeassistant/setup.sh) file in this repository's _homeassistant_ directory can be used to create the directory structure and compose.yml file for the Home Assistant and ESPHome containers. Simply download it into the directory where you want Home Assistant to live and run setup.sh from there.
@@ -124,11 +128,10 @@ You can see how things are doing using the `docker compose ps` command.
 alpine:/var/lib/docker/compose/homeassistant# docker compose ps
 NAME            IMAGE                                      COMMAND
     SERVICE         CREATED          STATUS                    PORTS
-esphome         esphome/esphome:latest                     "/entrypoint.sh dash…"   esphome         16 minutes ago   Up 16 minutes (healthy)
-homeassistant   lscr.io/linuxserver/homeassistant:latest   "/init"
-    homeassistant   16 minutes ago   Up 16 minutes
-mosquitto                eclipse-mosquitto:latest                   "/docker-entrypoint.…"   mosquitto                  16 minutes ago   Up 16 minutes             0.0.0.0:1883->1883/tcp, [::]:1883->1883/tcp, 0.0.0.0:9001->9001/tcp, [::]:9001->9001/tcp
-nginx_hass      nginx                                      "/docker-entrypoint.…"   nginx           16 minutes ago   Up 16 minutes             0.0.0.0:8080->80/tcp, :::8080->80/tcp, 0.0.0.0:8443->443/tcp, :::8443->443/tcp
+esphome                  esphome/esphome:latest                     "/entrypoint.sh dash…"   esphome                    18 hours ago   Up 18 hours (healthy)
+homeassistant            lscr.io/linuxserver/homeassistant:latest   "/init"                  homeassistant              18 hours ago   Up 18 hours
+mosquitto                eclipse-mosquitto:latest                   "/docker-entrypoint.…"   mosquitto                  18 hours ago   Up 18 hours             0.0.0.0:1883->1883/tcp, [::]:1883->1883/tcp, 0.0.0.0:9001->9001/tcp, [::]:9001->9001/tcpnginx_hass
+nginx_hass               nginx                                      "/docker-entrypoint.…"   nginx                      18 hours ago   Up 18 hours             0.0.0.0:8080->80/tcp, [::]:8080->80/tcp, 0.0.0.0:8081->443/tcp, [::]:8081->443/tcp
 ```
 
 > Remember, you need to be in the Docker Compose project directory for this to work. (The same directory as the compose.yml file.)
