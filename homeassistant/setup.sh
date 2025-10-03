@@ -5,11 +5,15 @@
 BASE_DIR=$(pwd)
 ESPHOME_DIR=$BASE_DIR/esphome
 HASS_DIR=$BASE_DIR/hass
+MOSQUITTO_DIR=$BASE_DIR/mosquitto
 NGINX_DIR=$BASE_DIR/nginx
 
 echo "Creating directory structure."
 install -d -o0 -g0 -m755 $ESPHOME_DIR/config
 install -d -o0 -g0 -m755 $HASS_DIR/config
+install -d -o1883 -g1883 -m755 $MOSQUITTO_DIR/config
+install -d -o1883 -g1883 -m755 $MOSQUITTO_DIR/data
+install -d -o1883 -g1883 -m755 $MOSQUITTO_DIR/log
 install -d -o0 -g0 -m755 $NGINX_DIR/conf.d
 install -d -o0 -g0 -m755 $NGINX_DIR/html
 
@@ -37,6 +41,21 @@ services:
     network_mode: host
     restart: unless-stopped
 
+  mosquitto:
+    container_name: mosquitto
+    hostname: mosquitto
+    image: eclipse-mosquitto:latest
+    ports:
+      - 1883:1883
+      - 9001:9001
+    volumes:
+      - $MOSQUITTO_DIR/config:/mosquitto/config
+      - $MOSQUITTO_DIR/data:/mosquitto/data
+      - $MOSQUITTO_DIR/log:/mosquitto/log
+    stdin_open: true
+    tty: true
+    restart: unless-stopped
+
   nginx:
     container_name: nginx_hass
     hostname: nginx
@@ -62,5 +81,30 @@ networks:
           gateway: 192.168.255.1
 EOF
 
+echo "Creating mosquitto.conf."
+cat <<EOF >$MOSQUITTO_DIR/config/mosquitto.conf
+listener 1883
+listener 9001
+protocol websockets
+persistence true
+persistence_file mosquitto.db
+persistence_location /mosquitto/data
+
+#Authentication
+allow_anonymous true
+password_file /mosquitto/config/passwd
+EOF
+chown 1883:1883 $MOSQUITTO_DIR/config/mosquitto.conf
+chmod 700 $MOSQUITTO_DIR/config/mosquitto.conf
+
+echo "Creating empty mosquitto password file."
+touch $MOSQUITTO_DIR/config/passwd
+chown 1883:1883 $MOSQUITTO_DIR/config/passwd
+chmod 700 $MOSQUITTO_DIR/config/passwd
+
 echo
 echo "To start home automation stack, use: docker-compose up -d"
+echo
+echo "To add mosquitto MQTT users and passwords:
+echo "docker exec -it mosquitto sh"
+echo "/usr/bin/mosquitto_passwd -b /mosquitto/config/pwfile mqttuser mqttpassword"
