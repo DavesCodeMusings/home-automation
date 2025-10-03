@@ -136,4 +136,23 @@ nginx_hass               nginx                                      "/docker-ent
 
 > Remember, you need to be in the Docker Compose project directory for this to work. (The same directory as the compose.yml file.)
 
+### Creating an MQTT User Account
+The Mosquitto MQTT broker is configured to allow anonymous connections, but not all devices will work this way. Some devices require a specific username and password to be entered before they will connect to MQTT. If you have devices like this, the commands below show how to create an MQTT user and password in Mosquitto.
+
+```
+alpine:/# docker exec -it mosquitto sh
+/ # /usr/bin/mosquitto_passwd -b /mosquitto/config/pwfile pokemon Go
+/ # exit
+```
+
+The first command starts a command shell within the Docker container _mosquitto_. The second command creates a user named _pokemon_ with a password of _Go_.
+
+If you happen to make a mistake with the user, you can delete it with the commands shown below.
+
+```
+alpine:/# docker exec -it mosquitto sh
+/ # /usr/bin/mosquitto_passwd -D /mosquitto/config/pwfile pokemon
+/ # exit
+```
+
 MORE TO COME!
