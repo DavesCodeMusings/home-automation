@@ -1,11 +1,13 @@
 > Work in Progress
 
 # Home Assistant, ESPHome, Nginx, and Docker
-A lot of people run Home Assistant for their home automation system. Quite a few of those people try to avoid "the cloud" and use only locally controlled devices. But I don't think a lot of folks run their Home Assistant in Docker containers. Or if they do, they're pretty low key about it.
+A lot of people run Home Assistant for their home automation system. Quite a few of those people do so to avoid "the cloud" and use only locally controlled devices. But I don't think a lot of folks run their Home Assistant in Docker containers. Or if they do, they're pretty low key about it.
 
-That's what this repository is for. It's a place where I share my configurations for Home Assistant, running in Docker containers, and avoiding cloud connections. My focus is on minimalism and avoiding cloud connected devices. However, minimalism does not mean a lack of features. It is simply a careful consideration features and the effort required to maintain them.
+Running an entire home automation system in containers can be daunting. It's probably not for the average Home Assistant user. But, if you facy yourself cosplaying a sysadmin, this repository is for you.
 
-This HOWTO also takes a minimalist approach, focusing on the specifics of running these services together in Docker containers as a Docker Compose project, and leaving the details of OS setup and some service configuration to established, external documentation sources.
+Here is where I share my configurations for Home Assistant, running in Docker containers, and avoiding cloud connections. My focus is on minimalism and avoiding cloud connected devices. However, minimalism does not mean a lack of features. It is simply a careful consideration features versus the effort required to maintain them.
+
+This HOWTO also takes a minimalist approach, focusing on the specifics of running these home automation services together in Docker containers as a Docker Compose project. I'm intentionally leaving the details of OS setup and some of the service configuration to established, external documentation sources.
 
 ## Hardware
 My platform of choice is the Intel based mini PC. Next Unit of Computing (NUC) is what Intel called it. There are multiple manufacturers now. In these examples, I'm using an old Celeron J4005-based NUC with 8G of RAM and a 256G Western Digital Green SATA-attached solid-state drive. It's humming along happily, but that particular model is no longer manufactured. Any of the popular N100 CPU models available today should be more than capable.
@@ -18,8 +20,9 @@ My platform of choice is the Intel based mini PC. Next Unit of Computing (NUC) i
 I'm using Alpine Linux as my operating system. Everything I'm doing should be possible with Debian or Raspberry Pi OS. My preference for Alpine comes from its small footprint. Nearly everything I'm running is in a Docker container. All the underlying OS has to is run Docker and provide a few basic services. Alpine can do that in an 8G root partition. (In fact, it's using less than half of that.) This leaves more of the drive available for services I want to run and data I want to store.
 
 ## Basic Services
-Here's a list of what I'm running on the Alpine OS beyond what is included in the base installation.
+Here's a list of what I'm running on the Alpine OS beyond what is included in the base installation:
 * apcupsd - monitors and alerts on uninterruptable power supply (UPS) events
+* bind9 - provides caching DNS, local network name resolution, and ad blocking
 * dovecot - lets users access email with IMAP and POP3 clients
 * exim - delivers mail locally
 * lvm - allows the solid-state drive partitions to be easily organized and resized if needed
@@ -29,7 +32,7 @@ Here's a list of what I'm running on the Alpine OS beyond what is included in th
 
 The main goal of this set of services (everything except for lvm and slapd) is to provide monitoring and notification. The secondary goal is to provide an easy user experience with one password to access all network services with LDAP authentication (slapd). Finally, lvm's logical volumes provide a safeguard against anything using up too much space on the root partition and crashing the system.
 
-For help getting these services set up on Alpine, see the [Alpine Wiki Tutorials and HOWTOs](https://wiki.alpinelinux.org/wiki/Tutorials_and_Howtos). Specifically, the HOWTOs for [apcupsd](https://wiki.alpinelinux.org/wiki/Apcupsd), [Small-Time Email with Exim and Dovecot](https://wiki.alpinelinux.org/wiki/Small-Time_Email_with_Exim_and_Dovecot), and [OpenLDAP](https://wiki.alpinelinux.org/wiki/Configure_OpenLDAP).
+For help getting these services set up on Alpine, see the [Alpine Wiki Tutorials and HOWTOs](https://wiki.alpinelinux.org/wiki/Tutorials_and_Howtos). Specifically, the HOWTOs for [apcupsd](https://wiki.alpinelinux.org/wiki/Apcupsd), [Small-Time DNS with BIND9](https://wiki.alpinelinux.org/wiki/Small-Time_DNS_with_BIND9), [Small-Time Email with Exim and Dovecot](https://wiki.alpinelinux.org/wiki/Small-Time_Email_with_Exim_and_Dovecot), and [OpenLDAP](https://wiki.alpinelinux.org/wiki/Configure_OpenLDAP).
 
 Remaining services are all run in Docker containers.
 
@@ -75,6 +78,7 @@ alpine:/var/lib/docker/compose/homeassistant# ls -1F
 compose.yml
 esphome/
 hass/
+mosquitto/
 nginx/
 setup.sh*
 ```
@@ -104,8 +108,9 @@ Running the command `docker compose up -d` from within the _homeassistant_ proje
 
 ```
 alpine:/var/lib/docker/compose/homeassistant# docker compose up -d
-[+] Running 4/4
+[+] Running 5/5
  ✔ Network homeassistant_reverse_proxy  Created                            0.1s
+ ✔ Container mosquitto                  Started                            0.3s
  ✔ Container nginx_hass                 Started                            0.5s
  ✔ Container esphome                    Started                            0.3s
  ✔ Container homeassistant              Started                            0.3s
@@ -120,6 +125,7 @@ NAME            IMAGE                                      COMMAND
 esphome         esphome/esphome:latest                     "/entrypoint.sh dash…"   esphome         16 minutes ago   Up 16 minutes (healthy)
 homeassistant   lscr.io/linuxserver/homeassistant:latest   "/init"
     homeassistant   16 minutes ago   Up 16 minutes
+mosquitto                eclipse-mosquitto:latest                   "/docker-entrypoint.…"   mosquitto                  16 minutes ago   Up 16 minutes             0.0.0.0:1883->1883/tcp, [::]:1883->1883/tcp, 0.0.0.0:9001->9001/tcp, [::]:9001->9001/tcp
 nginx_hass      nginx                                      "/docker-entrypoint.…"   nginx           16 minutes ago   Up 16 minutes             0.0.0.0:8080->80/tcp, :::8080->80/tcp, 0.0.0.0:8443->443/tcp, :::8443->443/tcp
 ```
 
